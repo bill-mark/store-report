@@ -1,6 +1,6 @@
 <template>
 <div class="all">
-  <div class="box">
+  <div class="box p00">
     <div class="p1head">
         <div class="p1headtop">
             <span class="p1headtop_span_line"></span>
@@ -184,8 +184,8 @@
 
   <div class="box p06">
     <div class="boxhead">店长{{homedata.report_type}}分析报告</div>
-    
-    <table class="p06_table" id="p06_table">
+
+    <table class="p06_table_2" id="p06_tables">
       <tr>
          <th class="th01">大类</th>
          <th class="th02">性别</th>
@@ -201,56 +201,22 @@
          <th class="th04">销售占比</th>
          <th class="th04">库存占比</th>
       </tr>
-      <tr v-for="item in shoestable2_2">
-         <td>{{item.shoename}}</td>
+      <tr v-for="item in shoestable2_2_2">
+         <td>鞋</td>
          <td >{{item.category_name}}</td>
          <td>{{item.series_name}}</td>
          <td>{{item.sale_discount}}</td>
-         <td>{{item.sale_quantity}}</td>
+         <td>{{item.sale_amount}}</td>
          <td>{{item.inventory_amount}}</td>
          <td>{{item.sale_quantity}}</td>
          <td>{{item.inventory_quantity}}</td>
          <td>{{item.sale_sku}}</td>
          <td>{{item.inventory_sku}}</td>
-         <td>{{item.turnover_ration}}</td>
-         <td>{{item.sale_ratio}}</td>
-         <td>{{item.inventory_ratio}}</td>
+         <td>{{item.sale_sku_ratio}}</td>
+         <td>{{item.sale_amount_ratio}}</td>
+         <td>{{item.inventory_amount_ratio}}</td>
       </tr>
     </table>
-
-    <table class="p06_table_2" id="p06_table_2"><!-- 新接口 -->
-      <tr>
-         <th class="th01">大类</th>
-         <th class="th02">性别</th>
-         <th class="th03">系列</th>
-         <th class="th04">折扣</th>
-         <th class="th04">销售额</th>
-         <th class="th04">库存额</th>
-         <th class="th04">销售量</th>
-         <th class="th04">库存量</th>
-         <th class="th04">销售SKU</th>
-         <th class="th04">库存SKU</th>
-         <th class="th04">动销率</th>
-         <th class="th04">销售占比</th>
-         <th class="th04">库存占比</th>
-      </tr>
-      <tr v-for="item in shoestable2_2">
-         <td>{{item.shoename}}</td>
-         <td >{{item.category_name}}</td>
-         <td>{{item.series_name}}</td>
-         <td>{{item.sale_discount}}</td>
-         <td>{{item.sale_quantity}}</td>
-         <td>{{item.inventory_amount}}</td>
-         <td>{{item.sale_quantity}}</td>
-         <td>{{item.inventory_quantity}}</td>
-         <td>{{item.sale_sku}}</td>
-         <td>{{item.inventory_sku}}</td>
-         <td>{{item.turnover_ration}}</td>
-         <td>{{item.sale_ratio}}</td>
-         <td>{{item.inventory_ratio}}</td>
-      </tr>
-    </table>
-
 
     <div class="boxtail">
     {{homedata.store_name}}·{{homedata.time_year}}年第{{homedata.week_no}}周
@@ -261,6 +227,28 @@
   <div class="box p07">
     <div class="boxhead">店长{{homedata.report_type}}分析报告</div>
     
+    <div class="p04_pinpai_logo"></div>
+    <div class="p04_pinpai">断码率</div>
+    <table class="p06_table_2" id="p07_tables">
+      <tr>
+         <th class="th01">大类</th>
+         <th class="th02">性别</th>
+         <th class="th03">系列</th>
+         <th class="th04">断码率</th>
+         <th class="th04">单件占总断码率</th>
+         <th class="th04">单件动销率</th>
+         <th class="th04">单件SKU</th>       
+      </tr>
+      <tr v-for="item in shorttablep07_2">
+         <td style="text-align:left;padding-left:10px;">鞋</td>
+         <td style="text-align:left;padding-left:10px;">{{item.category_name}}</td>
+         <td style="text-align:left;padding-left:10px;">{{item.series_name}}</td>
+         <td style="text-align:right;padding-right:10px;">{{item.short_number}}</td>
+         <td style="text-align:right;padding-right:10px;">{{item.short_percent}}</td>
+         <td style="text-align:right;padding-right:10px;">{{item.short_ratio}}</td>
+         <td style="text-align:right;padding-right:10px;">{{item.short_sku}}</td>
+      </tr>
+    </table>
 
     <div class="boxtail">
     {{homedata.store_name}}·{{homedata.time_year}}年第{{homedata.week_no}}周
@@ -320,107 +308,170 @@ export default {
         stuff_phone:"13333334444",
         time_update:"2017-05-05",
       },
-      //1-1,1-2,1-3数据
-      saledata:{
-        sale_amounts:[27,245,128,79,90,78],//销售额数组
-        sale_finishs:[54,78,16,32,67,32],//完成率数组
-        sale_discounts:[78,89,54,34,23,45], //折扣数组
-        week_nos:["44周","45周","46周","47周","48周","49周"], //周数组
-        customer_sale_amounts:[127,445,185,79,90,78],//客单价数组
-        customer_sale_quantity:[1.2,1.5,1.3,1.8,1.2,1.6],//客单量数组
-      },
 
-      //2-1 销存占比-品牌季节 后端数据模拟
-      sean_ajaxdata:[
+      //第2页 p02 1-1,1-2,1-3数据
+      saledata_p02_api:[  //模拟API数据格式
         {
-            "brand_season": '15Q1',//品牌季节
-            "category_id": 'c34',//大类ID
-            "category_name": '鞋',//大类名称
-            "inventory_amount": 134,//库存额
-            "sale_amount": 178//销售额
+            "customer_sale_amount": 83731,//客单价
+            "customer_sale_quantity": 1.8765,//客单量
+            "sale_amount": 41751,//销售额
+            "sale_discount": 0.7168,//折扣
+            "sale_finish": 0.1145,//完成率
+            "sale_target": 81701,//月目标
+            "week_no": "201730"//周数
         },
         {
-            "brand_season": '16Q1',
-            "category_id": 'c34',
-            "category_name": '鞋',
-            "inventory_amount": 178,
-            "sale_amount": 129
+            "customer_sale_amount": 53732,//客单价
+            "customer_sale_quantity": 2.765,//客单量
+            "sale_amount": 39052,//销售额
+            "sale_discount": 0.5262,//折扣
+            "sale_finish": 0.5745,//完成率
+            "sale_target": 59702,//月目标
+            "week_no": "201731"//周数
         },
         {
-            "brand_season": '16Q2',
-            "category_id": 'c34',
-            "category_name": '鞋',
-            "inventory_amount": 108,
-            "sale_amount": 196
+            "customer_sale_amount": 33731,//客单价
+            "customer_sale_quantity": 1.1992,//客单量
+            "sale_amount": 31755,//销售额
+            "sale_discount": 0.8568,//折扣
+            "sale_finish": 0.1345,//完成率
+            "sale_target": 66707,//月目标
+            "week_no": "201732"//周数
         },
         {
-            "brand_season": '15Q1',
-            "category_id": 'c35',
-            "category_name": '服',
-            "inventory_amount": 278,
-            "sale_amount": 229
+            "customer_sale_amount": 93731,//客单价
+            "customer_sale_quantity": 1.0789,//客单量
+            "sale_amount": 31755,//销售额
+            "sale_discount": 0.9568,//折扣
+            "sale_finish": 0.1345,//完成率
+            "sale_target": 99707,//月目标
+            "week_no": "201733"//周数
         },
         {
-            "brand_season": '16Q1',
-            "category_id": 'c35',
-            "category_name": '服',
-            "inventory_amount": 278,
-            "sale_amount": 229
+            "customer_sale_amount": 43731,//客单价
+            "customer_sale_quantity": 1.5568,//客单量
+            "sale_amount": 31755,//销售额
+            "sale_discount": 0.1568,//折扣
+            "sale_finish": 0.1345,//完成率
+            "sale_target": 49207,//月目标
+            "week_no": "201734"//周数
         },
         {
-            "brand_season": '16Q2',
-            "category_id": 'c35',
-            "category_name": '服',
-            "inventory_amount": 208,
-            "sale_amount": 279
+            "customer_sale_amount": 23731,//客单价
+            "customer_sale_quantity": 1.6775567,//客单量
+            "sale_amount": 31755,//销售额
+            "sale_discount": 0.4568,//折扣
+            "sale_finish": 0.1345,//完成率
+            "sale_target": 81707,//月目标
+            "week_no": "201735"//周数
+        }
+      ],
+      saledata:null,   //转换后的数据格式
+      
+
+      //第4页 p04 品牌季节 模拟API数据
+      seandata_p04_api:[
+        {
+            "brand_season_name": "16Q1",
+            "category_name": "鞋",
+            "inventory_amount_ratio": 0.178,
+            "sale_amount_ratio": 0.234
         },
         {
-            "brand_season": '15Q1',
-            "category_id": 'c36',
-            "category_name": '配',
-            "inventory_amount": 378,
-            "sale_amount": 329
+            "brand_season_name": "16Q2",
+            "category_name": "鞋",
+            "inventory_amount_ratio": 0.335,
+            "sale_amount_ratio": 0.378
         },
         {
-            "brand_season": '16Q1',
-            "category_id": 'c36',
-            "category_name": '配',
-            "inventory_amount": 378,
-            "sale_amount": 329
+            "brand_season_name": "16Q3",
+            "category_name": "鞋",
+            "inventory_amount_ratio": 0.212,
+            "sale_amount_ratio": 0.155
         },
         {
-            "brand_season": '16Q2',
-            "category_id": 'c36',
-            "category_name": '配',
-            "inventory_amount": 308,
-            "sale_amount": 379
+            "brand_season_name": "16Q4",
+            "category_name": "鞋",
+            "inventory_amount_ratio": 0.290,
+            "sale_amount_ratio": 0.255
         },
         {
-            "brand_season": '15Q1',
-            "category_id": 'c37',
-            "category_name": '总计',
-            "inventory_amount": 578,
-            "sale_amount": 529
+            "brand_season_name": "16Q1",
+            "category_name": "服",
+            "inventory_amount_ratio": 0.178,
+            "sale_amount_ratio": 0.234
         },
         {
-            "brand_season": '16Q1',
-            "category_id": 'c37',
-            "category_name": '总计',
-            "inventory_amount": 578,
-            "sale_amount": 529
+            "brand_season_name": "16Q2",
+            "category_name": "服",
+            "inventory_amount_ratio": 0.335,
+            "sale_amount_ratio": 0.378
         },
         {
-            "brand_season": '16Q2',
-            "category_id": 'c37',
-            "category_name": '总计',
-            "inventory_amount": 508,
-            "sale_amount": 579
+            "brand_season_name": "16Q3",
+            "category_name": "服",
+            "inventory_amount_ratio": 0.212,
+            "sale_amount_ratio": 0.155
         },
+        {
+            "brand_season_name": "16Q4",
+            "category_name": "服",
+            "inventory_amount_ratio": 0.290,
+            "sale_amount_ratio": 0.255
+        },
+        {
+            "brand_season_name": "16Q1",
+            "category_name": "配",
+            "inventory_amount_ratio": 0.178,
+            "sale_amount_ratio": 0.234
+        },
+        {
+            "brand_season_name": "16Q2",
+            "category_name": "配",
+            "inventory_amount_ratio": 0.335,
+            "sale_amount_ratio": 0.378
+        },
+        {
+            "brand_season_name": "16Q3",
+            "category_name": "配",
+            "inventory_amount_ratio": 0.212,
+            "sale_amount_ratio": 0.155
+        },
+        {
+            "brand_season_name": "16Q4",
+            "category_name": "配",
+            "inventory_amount_ratio": 0.290,
+            "sale_amount_ratio": 0.255
+        },
+        {
+            "brand_season_name": "16Q1",
+            "category_name": "合计",
+            "inventory_amount_ratio": 0.178,
+            "sale_amount_ratio": 0.234
+        },
+        {
+            "brand_season_name": "16Q2",
+            "category_name": "合计",
+            "inventory_amount_ratio": 0.335,
+            "sale_amount_ratio": 0.378
+        },
+        {
+            "brand_season_name": "16Q3",
+            "category_name": "合计",
+            "inventory_amount_ratio": 0.212,
+            "sale_amount_ratio": 0.155
+        },
+        {
+            "brand_season_name": "16Q4",
+            "category_name": "合计",
+            "inventory_amount_ratio": 0.290,
+            "sale_amount_ratio": 0.255
+        }
       ],
 
-      //2-1 销存占比-品牌季节 本地数据
+      //p04 品牌图表和性别表 转换后的数据格式
       seasondata2_1:{
-        //右侧季节表格 模拟
+        //品牌表 转换后格式
         biaoge2_1_0:[
           {
             "brand_season": '15Q1',//品牌季节
@@ -457,7 +508,7 @@ export default {
           }      
         ],
 
-        //右侧性别表格
+        //性别表 转换后格式
         biaoge2_1_1:[
           {
             "brand_season": '男子',//品牌季节
@@ -488,104 +539,11 @@ export default {
           }      
         ],
 
-        //左侧图模拟
-        shoessales:[15, 15, 20, 70],//鞋销售额数组
-        shoesinventorys:[120, 132, 101, 194],//鞋库存额数组
-        clothessales:[120, 192, 81, 134],//服销售额数组
-        clothesinventorys:[145, 132, 101, 174],//服库存额数组
-        accesssales:[245,134,278,324],//配销售额数组
-        accessinventorys:[345,123,425,346],//配库存额数组
-        totalsales:[768,342,865,539],//总计销售额数组
-        totalinventorys:[324,563,789,458],//总计库存额数组
-        seanname2_1_1:['15Q1','15Q2','15q3','15q4'],//季节数组
-        legendname2_1_1:['15销售Q1','15销售Q2','15销售Q3','15销售Q4','','15库存Q1','15库存Q2','15库存Q3','15库存Q4'],
-        seriesarray:[
-            {
-              name:"15销售Q1",
-              type:'bar',
-              barWidth:20,
-              stack:'销售',
-              data:[15, 15, 20,70],
-              itemStyle:{
-                 normal:{
-                    color:'#004d88',//柱状图样式
-                 }, 
-              }
-            },
-            {
-              name:"15销售Q2",
-              type:'bar',
-              barWidth:20,
-              stack:'销售',
-              data:[25, 25, 35, 15],
-              itemStyle:{
-                 normal:{color:'#92aecf'} //柱状图样式
-              }
-            },
-            {
-              name:"15销售Q3",
-              type:'bar',
-              barWidth:20,
-              stack:'销售',
-              data:[25, 35, 25, 5],
-              itemStyle:{
-                 normal:{color:'#485b82'} //柱状图样式
-              }
-            },
-            {
-              name:"15销售Q4",
-              type:'bar',
-              barWidth:20,
-              stack:'销售',
-              data:[35, 25, 20, 10],
-              itemStyle:{
-                 normal:{color:'#0076b0'} //柱状图样式
-              }
-            },
-            {
-              name:"15库存Q1",
-              type:'bar',
-              barWidth:20,
-              stack:'库存',
-              data:[17, 28, 37, 40],
-              itemStyle:{
-                 normal:{color:'#004d88'} //柱状图样式
-              }
-            },
-            {
-              name:"15库存Q2",
-              type:'bar',
-              barWidth:20,
-              stack:'库存',
-              data:[23, 22, 30, 10],
-              itemStyle:{
-                 normal:{color:'#92aecf'} //柱状图样式
-              }
-            },
-            {
-              name:"15库存Q3",
-              type:'bar',
-              barWidth:20,
-              stack:'库存',
-              data:[30, 34, 13, 20],
-              itemStyle:{
-                 normal:{color:'#485b82'} //柱状图样式
-              }
-            },
-            {
-              name:"15库存Q4",
-              type:'bar',
-              barWidth:20,
-              stack:'库存',
-              data:[30, 16, 20, 30],
-              itemStyle:{
-                 normal:{color:'#0076b0'} //柱状图样式
-              }
-            }
-        ]
+        seriesarray:[],//品牌图 转换后格式
+            
       },
 
-      //2-1 销存占比-性别  本地数据
+      //p04 2-1 性别图 转换后的数据
       sexdata2_1_2:{
          legendname2_1_2:['男子','女子','儿童','无性别'],
          seriesarray:[
@@ -675,18 +633,16 @@ export default {
       },
 
       //p06 2-2 鞋分析表格
-      rowspandata1:false,//鞋的rowspan值
-      rowspandata2:false,//性别的rowspan值
-      shoestable2_2_1:[
+      shoestable2_2_1:[  //模拟api数据格式
         {
-            "category_id": "201666666666",
+            "category_id": "201611111111",
             "category_name": "男子",
             "inventory_amount": 1216849,
-            "inventory_amount_ratio": 48445,
+            "inventory_amount_ratio": 0.67,
             "inventory_quantity": 1271,
             "inventory_sku": 94,
             "sale_amount": 127662,
-            "sale_amount_ratio": 23640,
+            "sale_amount_ratio": 0.79,
             "sale_discount": 0.9758748796037242,
             "sale_nos_amount": 130818,
             "sale_quantity": 122,
@@ -697,7 +653,7 @@ export default {
                     "inventory_amount_ratio": 1,
                     "sale_amount_ratio": 1,
                     "sub": 1,
-                    "category_id": "20160807000161",
+                    "category_id": "2016080700016101",
                     "category_name": "篮球",
                     "inventory_amount": 286872,
                     "inventory_quantity": 298,
@@ -713,7 +669,7 @@ export default {
                     "inventory_amount_ratio": 1,
                     "sale_amount_ratio": 1,
                     "sub": 1,
-                    "category_id": "20160807000162",
+                    "category_id": "2016080700016201",
                     "category_name": "足球",
                     "inventory_amount": 95522,
                     "inventory_quantity": 148,
@@ -729,7 +685,7 @@ export default {
                     "inventory_amount_ratio": 1,
                     "sale_amount_ratio": 1,
                     "sub": 1,
-                    "category_id": "20160807000163",
+                    "category_id": "2016080700016301",
                     "category_name": "跑步",
                     "inventory_amount": 724450,
                     "inventory_quantity": 640,
@@ -745,7 +701,7 @@ export default {
                     "inventory_amount_ratio": 1,
                     "sale_amount_ratio": 1,
                     "sub": 1,
-                    "category_id": "20160807000167",
+                    "category_id": "2016080700016401",
                     "category_name": "网球",
                     "inventory_amount": 65371,
                     "inventory_quantity": 109,
@@ -760,14 +716,14 @@ export default {
             ]
         },
         {
-            "category_id": "20160419000167",
+            "category_id": "2016222222222",
             "category_name": "女子",
             "inventory_amount": 1216849,
-            "inventory_amount_ratio": 48445,
+            "inventory_amount_ratio": 0.88,
             "inventory_quantity": 1271,
             "inventory_sku": 94,
             "sale_amount": 127662,
-            "sale_amount_ratio": 23640,
+            "sale_amount_ratio": 0.43,
             "sale_discount": 0.9758748796037242,
             "sale_nos_amount": 130818,
             "sale_quantity": 122,
@@ -778,7 +734,7 @@ export default {
                     "inventory_amount_ratio": 1,
                     "sale_amount_ratio": 1,
                     "sub": 1,
-                    "category_id": "20160807000163",
+                    "category_id": "2016080700016102",
                     "category_name": "跑步",
                     "inventory_amount": 724450,
                     "inventory_quantity": 640,
@@ -794,7 +750,7 @@ export default {
                     "inventory_amount_ratio": 1,
                     "sale_amount_ratio": 1,
                     "sub": 1,
-                    "category_id": "20160807000167",
+                    "category_id": "2016080700016202",
                     "category_name": "网球",
                     "inventory_amount": 65371,
                     "inventory_quantity": 109,
@@ -810,7 +766,7 @@ export default {
                     "inventory_amount_ratio": 1,
                     "sale_amount_ratio": 1,
                     "sub": 1,
-                    "category_id": "20160807000168",
+                    "category_id": "2016080700016302",
                     "category_name": "户外",
                     "inventory_amount": 41841,
                     "inventory_quantity": 69,
@@ -826,7 +782,7 @@ export default {
                     "inventory_amount_ratio": 1,
                     "sale_amount_ratio": 1,
                     "sub": 1,
-                    "category_id": "20160807000169",
+                    "category_id": "2016080700016402",
                     "category_name": "游泳",
                     "inventory_amount": 2793,
                     "inventory_quantity": 7,
@@ -841,175 +797,83 @@ export default {
             ]
         }
       ],
-      shoestable2_2_2:null,
-      shoestable2_2 :[              
-        {
-          "category_id": "测试内容p00v",
-          "category_name": "男子",
-          "gender_id": "测试内容y20k",          
-          "inventory_amount": 44333,
-          "inventory_quantity": 38720,
-          "inventory_ratio": 0.29,
-          "inventory_sku": 16474,
-          "sale_amount": 40838,
-          "sale_discount": 0.8,
-          "sale_quantity": 80387,
-          "sale_ratio": 0.5,
-          "sale_sku": 30141,
-          "series_id": 10837,
-          "series_name":"户外",
-          "turnover_ration": 0.78,         
-        },
-        {
-          "category_id": "测试内容p00v",
-          "category_name": "男子",
-          "gender_id": "测试内容y20k",
-          
-          "inventory_amount": 44666,
-          "inventory_quantity": 38720,
-          "inventory_ratio": 0.29,
-          "inventory_sku": 16474,
-          "sale_amount": 40838,
-          "sale_discount": 0.8,
-          "sale_quantity": 80387,
-          "sale_ratio": 0.5,
-          "sale_sku": 30141,
-          "series_id": 10837,
-          "series_name":"篮球",
-          "turnover_ration": 0.78
-        },
-        {
-          "category_id": "测试内容p00v",
-          "category_name": "男子",
-          "gender_id": "测试内容y20k",
-          
-          "inventory_amount": 44777,
-          "inventory_quantity": 38720,
-          "inventory_ratio": 0.29,
-          "inventory_sku": 16474,
-          "sale_amount": 40838,
-          "sale_discount": 0.8,
-          "sale_quantity": 80387,
-          "sale_ratio": 0.5,
-          "sale_sku": 30141,
-          "series_id": 10837,
-          "series_name":"羽毛球",
-          "turnover_ration": 0.78
-        },
-        {
-          "category_id": "测试内容p00v",
-          "category_name": "女子",
-          "gender_id": "测试内容y20k",
-         
-          "inventory_amount": 44333,
-          "inventory_quantity": 38720,
-          "inventory_ratio": 0.29,
-          "inventory_sku": 16474,
-          "sale_amount": 40838,
-          "sale_discount": 0.8,
-          "sale_quantity": 80387,
-          "sale_ratio": 0.5,
-          "sale_sku": 30141,
-          "series_id": 10837,
-          "series_name":"户外",
-          "turnover_ration": 0.78
-        },
-        {
-          "category_id": "测试内容p00v",
-          "category_name": "女子",
-          "gender_id": "测试内容y20k",
-         
-          "inventory_amount": 44333,
-          "inventory_quantity": 38720,
-          "inventory_ratio": 0.29,
-          "inventory_sku": 16474,
-          "sale_amount": 40838,
-          "sale_discount": 0.8,
-          "sale_quantity": 80387,
-          "sale_ratio": 0.5,
-          "sale_sku": 30141,
-          "series_id": 10837,
-          "series_name":"篮球",
-          "turnover_ration": 0.78
-        },
-        {
-          "category_id": "测试内容p00v",
-          "category_name": "女子",
-          "gender_id": "测试内容y20k",
-         
-          "inventory_amount": 44333,
-          "inventory_quantity": 38720,
-          "inventory_ratio": 0.29,
-          "inventory_sku": 16474,
-          "sale_amount": 40838,
-          "sale_discount": 0.8,
-          "sale_quantity": 80387,
-          "sale_ratio": 0.5,
-          "sale_sku": 30141,
-          "series_id": 10837,
-          "series_name":"羽毛球",
-          "turnover_ration": 0.78
-        },
-        {
-          "category_id": "测试内容p00v",
-          "category_name": "合计",
-          "gender_id": "测试内容y20k",
-          
-          "inventory_amount": 44333,
-          "inventory_quantity": 38720,
-          "inventory_ratio": 0.29,
-          "inventory_sku": 16474,
-          "sale_amount": 40838,
-          "sale_discount": 0.8,
-          "sale_quantity": 80387,
-          "sale_ratio": 0.5,
-          "sale_sku": 30141,
-          "series_id": 10837,
-          "series_name":"户外",
-          "turnover_ration": 0.78
-        },
-        {
-          "category_id": "测试内容p00v",
-          "category_name": "合计",
-          "gender_id": "测试内容y20k",
-          
-          "inventory_amount": 44333,
-          "inventory_quantity": 38720,
-          "inventory_ratio": 0.29,
-          "inventory_sku": 16474,
-          "sale_amount": 40838,
-          "sale_discount": 0.8,
-          "sale_quantity": 80387,
-          "sale_ratio": 0.5,
-          "sale_sku": 30141,
-          "series_id": 10837,
-          "series_name":"篮球",
-          "turnover_ration": 0.78
-        },
-        {
-          "category_id": "测试内容p00v",
-          "category_name": "合计",
-          "gender_id": "测试内容y20k",
-          
-          "inventory_amount": 44333,
-          "inventory_quantity": 38720,
-          "inventory_ratio": 0.29,
-          "inventory_sku": 16474,
-          "sale_amount": 40838,
-          "sale_discount": 0.8,
-          "sale_quantity": 80387,
-          "sale_ratio": 0.5,
-          "sale_sku": 30141,
-          "series_id": 10837,
-          "series_name":"羽毛球",
-          "turnover_ration": 0.78
-        }         
+      shoestable2_2_2:null,//转换后的数据格式
+      
+      //p07 断码率表格
+      shorttablep07_1:[   //模拟断码率API
+          {
+              "category_id": "201611111111",
+              "category_name": "男子",
+              "short_number":0.32234,
+              "short_percent":0.1222,
+              "short_ratio":0.3234,
+              "short_sku":13,
+              "sub": [
+                  {
+                     "category_name": "户外",
+                     "short_number":0.32234,
+                     "short_percent":0.1222,
+                     "short_ratio":0.3234,
+                     "short_sku":13,
+                  },
+                  {
+                     "category_name": "篮球",
+                     "short_number":0.32234,
+                     "short_percent":0.1222,
+                     "short_ratio":0.3234,
+                     "short_sku":13,
+                  },
+                  {
+                      "category_name": "足球",
+                      "short_number":0.32234,
+                      "short_percent":0.1222,
+                      "short_ratio":0.3234,
+                      "short_sku":13,
+                  }
+              ]
+          },
+          {
+              "category_id": "201611111111",
+              "category_name": "女子",
+              "short_number":0.32234,
+              "short_percent":0.1222,
+              "short_ratio":0.3234,
+              "short_sku":13,
+              "sub": [
+                  {
+                     "category_name": "户外",
+                     "short_number":0.32234,
+                     "short_percent":0.1222,
+                     "short_ratio":0.3234,
+                     "short_sku":13,
+                  },
+                  {
+                     "category_name": "篮球",
+                     "short_number":0.32234,
+                     "short_percent":0.1222,
+                     "short_ratio":0.3234,
+                     "short_sku":13,
+                  },
+                  {
+                      "category_name": "足球",
+                      "short_number":0.32234,
+                      "short_percent":0.1222,
+                      "short_ratio":0.3234,
+                      "short_sku":13,
+                  }
+              ]
+          }
       ],
+      shorttablep07_2:null,//转换后的数据格式
    
     }
   },
   created() {
-    
+    //p06 调用处理AJAX数据函数
+    this.changedatap06(this.shoestable2_2_1)
+
+    //p07 调用处理AJAX数据函数
+    this.changedatap07(this.shorttablep07_1)
   },
   mounted() {
     //获得查询参数store_id 和week_no,version
@@ -1021,49 +885,29 @@ export default {
     //第一页
     this.home_ajax()
 
+    //第2页 p02
+    this.change_p02api(this.saledata_p02_api)
     this.draw1('1_1',this.legend1_3,this.legend1_1,this.title1_1,this.saledata.sale_amounts,this.saledata.sale_finishs,this.saledata.week_nos)
     this.draw1('1_2',this.legend1_3,this.legend1_2,this.title1_2,this.saledata.sale_amounts,this.saledata.sale_discounts,this.saledata.week_nos)
     this.draw2('1_3',this.legend1_4,this.legend1_5,this.title1_3,this.saledata.customer_sale_amounts,this.saledata.customer_sale_quantity,this.saledata.week_nos)
 
-    //第4页 表2-1 销存占比-品牌
+    //第4页 
+    this.change_p04_seanapi(this.seandata_p04_api)//处理API
+    //表2-1 销存占比-品牌
     this.draw3('2_1_1',this.title2_1_1,this.seasondata2_1.legendname2_1_1,this.xAxis2_1_1,this.seasondata2_1.seriesarray)
-
     //第4页 表2-1 销存占比-性别
     this.draw4('2_1_2',this.title2_1_2,this.sexdata2_1_2.legendname2_1_2,this.yAxis2_1_2,this.sexdata2_1_2.seriesarray)
 
-    //第4页 表2-1 销存占比-品牌
- 
-    //表06 表2-2 新
-    let a =this.shoestable2_2_1.length
-    let b=0
-    for(let i=0;i<this.shoestable2_2_1.length;i++){
-       b = b + this.shoestable2_2_1[i].sub.length
-    }
-    a = a+b
-    //console.log(a)
+    //第6页 p06  
+    this.SpanGrid(p06_tables,0,1) //合并p06表格第一列
+    this.SpanGrid(p06_tables,1,1) //合并p06表格第二列
 
-    //p06 表2-2 表 旧
-    for(let i=0;i<this.shoestable2_2.length;i++){
-      this.shoestable2_2[i].shoename = "鞋"
-      this.shoestable2_2[i].rowspandata1 = this.shoestable2_2.length
-
-    } 
-    for (let k=1;k<this.shoestable2_2.length;k++) {
-          let d=k-1;
-          if(this.shoestable2_2[k].shoename == this.shoestable2_2[d].shoename ){
-             this.shoestable2_2[k].rowspandata1 = false
-          }
-          if(this.shoestable2_2[k].category_name == this.shoestable2_2[d].category_name ){
-             this.shoestable2_2[k].rowspandata2 = 1
-          }
-    }
-    this.SpanGrid(p06_table,0,1) //合并p06表格第一列
-    this.SpanGrid(p06_table,1,1) //合并p06表格第二列
-    this.changedatap06(this.shoestable2_2_1)//遍历p06接口数据
-
+    //第7页 p07 
+    this.SpanGrid(p07_tables,0,1) //合并p07表格第一列
+    this.SpanGrid(p07_tables,1,1) //合并p07表格第二列
   },
   methods: {
-      //首页
+      //封面
       home_ajax(){
           axios({
                method: 'get',
@@ -1081,7 +925,28 @@ export default {
            })
       },
 
-      //表1-1 1-2
+      //第2页
+      //p02 api数据处理
+      change_p02api(data){
+          let newdata = {}
+          newdata.week_nos = []
+          newdata.sale_amounts = []
+          newdata.sale_finishs = []
+          newdata.sale_discounts = []
+          newdata.customer_sale_amounts = []
+          newdata.customer_sale_quantity = []
+          for(var i=0;i<data.length;i++){
+             newdata.week_nos.push(this.formatweekno(data[i].week_no))
+             newdata.sale_amounts.push(data[i].sale_amount)
+             newdata.sale_finishs.push(this.formatdis(data[i].sale_finish))
+             newdata.sale_discounts.push(this.formatdis(data[i].sale_discount))
+             newdata.customer_sale_amounts.push(data[i].customer_sale_amount)
+             newdata.customer_sale_quantity.push((data[i].customer_sale_quantity).toFixed(2))
+          }
+          this.saledata = newdata
+          //console.log(newdata)
+      },
+      //p02 图表渲染函数 表1-1 1-2
       draw1(id,legendname0,legendname,titlename,seriesdatafirst,seriesdatasecond,week_nos){
         this.charts1 = echarts.init(document.getElementById(id))
         this.charts1.setOption({
@@ -1140,8 +1005,7 @@ export default {
            ]
         })
       },
-
-      //表1-3
+      //p02 表1-3
       draw2(id,legendname0,legendname,titlename,seriesdatafirst,seriesdatasecond,week_nos){
         this.charts1 = echarts.init(document.getElementById(id))
         this.charts1.setOption({
@@ -1198,6 +1062,18 @@ export default {
         })
       },
 
+      //第4页
+      //p04 品牌季节 api数据处理
+      change_p04_seanapi(list){
+         let newdata = {}
+         newdata.data = []
+         //console.log(list)
+         for(var i=0;i<list.length;i++){
+             newdata.data.push(list.sale_amount_ratio)
+         }
+         console.log(newdata)
+      },
+
       //品类分析表2-1 销存占比-品牌
       draw3(id,titlename,legendname,xAxisname,seriesarray){
         this.charts = echarts.init(document.getElementById(id))
@@ -1206,7 +1082,7 @@ export default {
             tetx:titlename
           },
           tooltip : {
-              show:false,
+              show:true,
               trigger: 'axis',
               axisPointer : {            // 坐标轴指示器，坐标轴触发有效
                   type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
@@ -1217,6 +1093,9 @@ export default {
              bottom:-5,
              data:legendname,
           },
+          color:[
+            '#5e7bb6','#92aecf','#0076b0','#5e7bb6'
+          ],
           yAxis:{
             type:'value',
             min:0,
@@ -1240,10 +1119,10 @@ export default {
               barWidth:18,
               barGap:'200%',
               stack:'销售',
-              data:[15, 15, 20,70],
+              data:[15, 15, 20, 70],//销售季度1
               itemStyle:{
                  normal:{
-                    color:'#5e7bb6',//柱状图样式
+                 //color:'#5e7bb6',//柱状图样式
                  }, 
               }
             },
@@ -1252,9 +1131,9 @@ export default {
               type:'bar',
               barWidth:18,
               stack:'销售',
-              data:[25, 25, 35, 15],
+              data:[25, 25, 35, 15],//销售季度2
               itemStyle:{
-                 normal:{color:'#92aecf'} //柱状图样式
+                 //normal:{color:'#92aecf'} //柱状图样式
               }
             },
             {
@@ -1262,9 +1141,9 @@ export default {
               type:'bar',
               barWidth:18,
               stack:'销售',
-              data:[25, 35, 25, 5],
+              data:[25, 35, 25, 5],//销售季度3
               itemStyle:{
-                 normal:{color:'#0076b0'} //柱状图样式
+                // normal:{color:'#0076b0'} //柱状图样式
               }
             },
             {
@@ -1272,9 +1151,9 @@ export default {
               type:'bar',
               barWidth:18,
               stack:'销售',
-              data:[35, 25, 20, 10],
+              data:[35, 25, 20, 10],//销售季度4
               itemStyle:{
-                 normal:{color:'#0076b0'} //柱状图样式
+                // normal:{color:'#0076b0'} //柱状图样式
               }
             },
             {
@@ -1284,7 +1163,7 @@ export default {
               stack:'库存',
               data:[17, 28, 37, 40],
               itemStyle:{
-                 normal:{color:'#5e7bb6'} //柱状图样式
+                 //normal:{color:'#5e7bb6'} //柱状图样式
               }
             },
             {
@@ -1294,7 +1173,7 @@ export default {
               stack:'库存',
               data:[23, 22, 30, 10],
               itemStyle:{
-                 normal:{color:'#92aecf'} //柱状图样式
+                // normal:{color:'#92aecf'} //柱状图样式
               }
             },
             {
@@ -1304,7 +1183,7 @@ export default {
               stack:'库存',
               data:[30, 34, 13, 20],
               itemStyle:{
-                 normal:{color:'#0076b0'} //柱状图样式
+                 //normal:{color:'#0076b0'} //柱状图样式
               }
             },
             {
@@ -1314,14 +1193,13 @@ export default {
               stack:'库存',
               data:[30, 16, 20, 30],
               itemStyle:{
-                 normal:{color:'#0076b0'} //柱状图样式
+                // normal:{color:'#0076b0'} //柱状图样式
               }
             }
           ]
 
         })
       },
-
       //品类分析 表2-1 销存占比-性别
       draw4(id,titlename,legendname,yAxisname,seriesarray){
         this.charts = echarts.init(document.getElementById(id))
@@ -1360,29 +1238,75 @@ export default {
         })
       },
 
-      //p06 ajax数据处理
+      //第6页
+      //p06 ajax数据处理函数
       changedatap06(data){
-          var cc = {};
-          var dd = []
-          console.log(data)
+          let newdata = []
           for(var i=0;i<data.length;i++){           
-             //dd.push({
-             // category_id:data[i].category_id,
-             // sale_sku: data[i].sale_sku
-           //  }) 
              for(var j=0;j<data[i].sub.length;j++) {
-              dd.push({
-                category_id:data[i].sub[j].category_id,
-                sale_sku: data[i].sub[j].sale_sku
+              newdata.push({
+                category_name:data[i].category_name,
+                series_name:data[i].sub[j].category_name,
+                sale_discount:this.formatDiscount(data[i].sub[j].sale_discount),
+                sale_amount:data[i].sub[j].sale_amount,
+                inventory_amount:data[i].sub[j].inventory_amount,
+                sale_quantity:data[i].sub[j].sale_quantity,
+                inventory_quantity:data[i].sub[j].inventory_quantity,
+                sale_sku:data[i].sub[j].sale_sku,
+                inventory_sku:data[i].sub[j].inventory_sku,
+                sale_sku_ratio:this.formatDiscount(data[i].sub[j].sale_sku_ratio),
+                sale_amount_ratio:this.formatDiscount(data[i].sub[j].sale_amount_ratio),
+                inventory_amount_ratio:this.formatDiscount(data[i].sub[j].inventory_amount_ratio)
                }) 
-             }    
+             } 
+             newdata.push({
+                category_name:data[i].category_name,
+                series_name:"合计",
+                sale_discount:this.formatDiscount(data[i].sale_discount),
+                sale_amount:data[i].sale_amount,
+                inventory_amount:data[i].inventory_amount,
+                sale_quantity:data[i].sale_quantity,
+                inventory_quantity:data[i].inventory_quantity,
+                sale_sku:data[i].sale_sku,
+                inventory_sku:data[i].inventory_sku,
+                sale_sku_ratio:this.formatDiscount(data[i].sale_sku_ratio),
+                sale_amount_ratio:this.formatDiscount(data[i].sale_amount_ratio),
+                inventory_amount_ratio:this.formatDiscount(data[i].inventory_amount_ratio)
+             })    
           }
-          console.log(dd)
-
+          this.shoestable2_2_2 = newdata
       },
 
-      //合并单元格算法
-      //tabObj代表表的Id，即GridView的Id，cellIndex代表合并第几列，beignRow 代表从几行开始，通常使用1，因为0是表头
+      //第7页
+      //p07 ajax数据处理函数
+      changedatap07(data){
+          let newdata = []
+          for(var i=0;i<data.length;i++){           
+             for(var j=0;j<data[i].sub.length;j++) {
+              newdata.push({
+                category_name:data[i].category_name,
+                series_name:data[i].sub[j].category_name,
+                short_number:this.formatDiscount(data[i].sub[j].short_number),
+                short_percent:this.formatDiscount(data[i].sub[j].short_percent),
+                short_ratio:this.formatDiscount(data[i].sub[j].short_ratio),
+                short_sku:data[i].sub[j].short_sku,               
+               }) 
+             } 
+             newdata.push({
+                category_name:data[i].category_name,
+                series_name:"合计",
+                short_number:this.formatDiscount(data[i].short_number),
+                short_percent:this.formatDiscount(data[i].short_percent),
+                short_ratio:this.formatDiscount(data[i].short_ratio),
+                short_sku:data[i].short_sku,
+             })    
+          }
+          this.shorttablep07_2 = newdata
+      },
+
+
+  //各种算法合集
+      //合并单元格算法tabObj代表表的Id，即GridView的Id，cellIndex代表合并第几列，beignRow 代表从几行开始，通常使用1，因为0是表头
       SpanGrid(tabObj, cellindex, beginRow) {
           var colIndex = cellindex;
           var rowBeginIndex = beginRow;
@@ -1409,6 +1333,24 @@ export default {
               }
               i = j - 1;
           }
+      },
+
+      //处理小数 转为百分数
+      formatDiscount (discount) {  
+          if (discount == null) {
+              return '-'
+          }
+          return (parseFloat(discount) * 100).toFixed(1) + '%'
+      },
+
+      //处理小数为整数
+      formatdis(data){
+        return (parseFloat(data) * 100).toFixed(0)
+      },
+
+      //返回数的后两位 处理周数
+      formatweekno (data){
+        return data.substr(data.length-2,data.length)
       },
   }
 
@@ -1847,7 +1789,7 @@ export default {
   }
 }
 .p06{
-  .p06_table{
+  .p06_table_2{
     position:absolute;
     left:67px;
     top:95px;
@@ -1877,10 +1819,30 @@ export default {
       width: 76px;
     }
   }
+}
+.p07{
+  .p04_pinpai_logo{
+    position:absolute;
+    left: 70px;
+    top: 77px;
+    width: 12px;
+    height: 12px;
+    border-radius:6px;
+    background:#1c4a82;
+  }
+  .p04_pinpai{
+    position: absolute;
+    left: 88px;
+    top: 73px;
+    font-size:14px;
+    color:#000000;
+    letter-spacing:0;
+    text-align:left;
+  }
   .p06_table_2{
     position:absolute;
-    left:67px;
-    top:595px;
+    left:70px;
+    top:125px;
     th{
       height: 43px;
       background-color:#1c4a82;
@@ -1895,16 +1857,24 @@ export default {
       border:1px solid #ccc
     }
     .th01{
-      width: 50px;
+      width: 60px;
+      text-align:left;
+      padding-left:10px;
     }
     .th02{
-      width: 60px;
+      width: 80px;
+      text-align:left;
+      padding-left:10px;
     }
     .th03{
-      width: 80px;
+      width: 135px;
+      text-align:left;
+      padding-left:10px;
     }
     .th04{
-      width: 76px;
+      width: 155px;
+      text-align:right;
+      padding-right:10px;
     }
   }
 }
